@@ -1,0 +1,20 @@
+{ "name": "antena-spawn"
+, "description": "Uniform API for performing http(s) request and opening websocket connections"
+, "version": "0.0.0"
+, "author":
+    { "name": "Laurent Christophe"
+    , "email": "lachrist@vub.ac.be"
+    }
+, "repository": "lachrist/antena-spawn"
+, "license": "MIT"
+, "dependencies":
+    { "antena": "*"
+    }
+, "keywords":
+    [ "Request"
+    , "Connect"
+    , "Http"
+    , "WebSocket"
+    , "Upgrade"
+    ]
+}
