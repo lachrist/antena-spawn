@@ -1,9 +1,17 @@
 
 # Antena Spawn
 
-`child = require("antena/spawn/node")(source, argv, receptor)`
-`child = require("antena/spawn/browser")(source, argv, receptor)`
-`child = require("antena/spawn/mock")(source, argv, receptor)`
+```js
+child = require("antena/spawn/node")(source, argv, receptor)
+```
+
+```js
+child = require("antena/spawn/browser")(source, argv, receptor)
+```
+
+```js
+child = require("antena/spawn/mock")(source, argv, receptor)
+```
 
 * `source : object | string`
   * `path : string`
@@ -44,4 +52,3 @@
       * `message : json`
     * Event `message`
       * `message : json`
-
