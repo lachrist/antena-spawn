@@ -2,13 +2,13 @@
 var Events = require("events");
 var Stream = require("stream");
 var EmitterMock = require("antena/emitter/mock.js");
-var Console = require("../util/console.js");
+var Console = require("console");
 var Terminate = require("../util/terminate.js");
 
 function run (script, mock) {
   var main = Function("process", "console", script);
   try {
-    main(mock, Console(mock.stdout));
+    main(mock, new Console(mock.stdout, mock.stderr));
   } catch (error) {
     mock.stderr.write(error && "stack" in error ? error.stack : ""+error+"\n");
   }

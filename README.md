@@ -1,19 +1,11 @@
 
 # Antena Spawn
 
-```js
-child = require("antena/spawn/node")(source, argv, receptor)
-```
+Spawn a monolithic JavaScript program (no require).
 
-```js
-child = require("antena/spawn/browser")(source, argv, receptor)
-```
+## `child = require("antena/spawn/[node|browser|mock]")(source, argv, receptor)`
 
-```js
-child = require("antena/spawn/mock")(source, argv, receptor)
-```
-
-* `source : object | string`
+* `source : string | object`
   * `path : string`
   * `content : string`
 * `argv : [string]`
@@ -37,11 +29,14 @@ child = require("antena/spawn/mock")(source, argv, receptor)
   * Event `error`
     * `error : Error`
 
+## Variables accessible in the child's scope
+
 * `global : object`
-  * `__dirname : string`
-  * `__filename : string`
-  * `argv : [string]`
-  * `process : events.EventEmitter`
+* `__filename : string`
+* `__dirname : string`
+* `console : console.Console`
+* `process : events.EventEmitter`
+    * `argv : [string]`
     * `emitter : antena.Emitter`
     * `stdin : stream.Readable`
     * `stdout : stream.Writable`

@@ -16,22 +16,23 @@ module.exports = function (source, argv, receptor) {
   child.stderr = StreamWebsocket.Readable(cons.err);
   child.stdio = [child.stdin, child.stdout, child.stderr];
   var worker = new Worker(TEMPLATE_CHILD_URL);
-  var close = Attach(Receptor({}).merge({
-    user: receptor,
-    antena: Receptor({
-      onrequest: function (method, path, headers, body, callback) {
-        if (path === "/begin")
-          return callback(200, "ok", {}, JSON.stringify({
-            source: typeof source === "string" ? {path:source} : source, 
-            argv: argv || []
-          }));
-        if (path === "/end")
-          return terminate(parseInt(body), null);
-        callback(400, "invalid-path", {}, "");
-      },
-      onconnect: function (path, con) { cons[path.substring(1)].flush(con) }
-    })
-  }), worker);
+  var close = Attach(Receptor({
+    onrequest: function (method, path, headers, body, callback) {
+      if (path === "/begin")
+        return callback(200, "ok", {}, JSON.stringify({
+          source: typeof source === "string" ? {path:source} : source, 
+          argv: argv || []
+        }));
+      if (path === "/end")
+        return terminate(parseInt(body), null);
+      callback(400, "invalid-path", {}, "");
+    },
+    onconnect: function (path, con) {
+      if (path === "/io" || path === "/err" || path === "ipc")
+        return cons[path.substring(1)].flush(con);
+      con.close(4000, "invalid-path");
+    }
+  }).merge({meta:receptor}), worker);
   worker.onerror = function (error) {
     child.stderr.push(error.message+"\n");
   };
