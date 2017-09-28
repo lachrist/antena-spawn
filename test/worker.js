@@ -2,7 +2,7 @@
 var Path = require("path");
 var Spawn = require("../worker");
 
-var child = Spawn(SOURCE, ["foo", "bar"], require("./receptor.js"));
+var child = Spawn(SCRIPT, ["foo", "bar"], require("./receptor.js"));
 
 child.stdin.write("stdin test\n");
 

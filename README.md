@@ -1,13 +1,11 @@
 
-# Antena Spawn
+# antena-spawn
 
-Spawn a monolithic JavaScript program (no require).
+Spawn scripts with an antena connection.
 
-## `child = require("antena/spawn/[node|browser|mock]")(source, argv, receptor)`
+## `child = require("antena/spawn/[node|browser|mock]")(script, argv, receptor)`
 
-* `source : string | object`
-  * `path : string`
-  * `content : string`
+* `script : string`
 * `argv : [string]`
 * `receptor : antena.Receptor`
 * `child : events.EventEmitter`
@@ -29,11 +27,9 @@ Spawn a monolithic JavaScript program (no require).
   * Event `error`
     * `error : Error`
 
-## Variables accessible in the child's scope
+## Shimed variables accessible in the child's scope
 
 * `global : object`
-* `__filename : string`
-* `__dirname : string`
 * `console : console.Console`
 * `process : events.EventEmitter`
     * `argv : [string]`

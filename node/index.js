@@ -11,7 +11,7 @@ module.exports = function (script, argv, receptor) {
   server.listen(port, function () {
     child.send({
       script: script,
-      argv: argv || [],
+      argv: argv || ["node", "inline"],
       port: port || server.address().port
     });
   });

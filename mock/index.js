@@ -2,7 +2,7 @@
 var Events = require("events");
 var Stream = require("stream");
 var EmitterMock = require("antena/emitter/mock.js");
-var Console = require("console");
+var Console = require("../util/console.js");
 var Terminate = require("../util/terminate.js");
 
 function noop () {}
@@ -43,11 +43,11 @@ module.exports = function (script, argv, receptor) {
   mock.exit = function (code) { Terminate(child, code, null) };
   child.stdio = [child.stdin, child.stdout, child.stderr];
   mock.emitter = EmitterMock(receptor);
-  mock.argv = ["mock", source.path||null].concat(argv||[]);
+  mock.argv = argv || ["mock", "inline"];
   setTimeout(function () {
-    var main = Function("process", "console", script);
+    var main = Function("global", "process", "console", script);
     try {
-      main(mock, new Console(mock.stdout, mock.stderr));
+      main(global, mock, Console(mock.stdout, mock.stderr));
     } catch (error) {
       mock.stderr.write(error && "stack" in error ? error.stack : ""+error+"\n");
     }

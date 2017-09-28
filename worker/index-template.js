@@ -5,12 +5,12 @@ var Attach = require("antena/receptor/attach-worker.js");
 var Terminate = require("../util/terminate.js");
 var WebsocketBuffer = require("../util/websocket-buffer.js");
 var StreamWebsocket = require("../util/stream-websocket.js");
-var IpcWebsocket = require("../util/ipc-websocket.js");
 
-module.exports = function (source, argv, receptor) {
+module.exports = function (script, argv, receptor) {
   var child = new Events();
   var cons = {io:WebsocketBuffer(), err:WebsocketBuffer(), ipc:WebsocketBuffer()};
-  IpcWebsocket(cons.ipc, child);
+  cons.ipc.on("message", function (message) { child.emit("message", JSON.parse(message)) });
+  child.send = function (json) { cons.ipc.send(JSON.stringify(json)) };
   child.stdin = StreamWebsocket.Writable(cons.io);
   child.stdout = StreamWebsocket.Readable(cons.io);
   child.stderr = StreamWebsocket.Readable(cons.err);
@@ -20,7 +20,7 @@ module.exports = function (source, argv, receptor) {
     onrequest: function (method, path, headers, body, callback) {
       if (path === "/begin")
         return callback(200, "ok", {}, JSON.stringify({
-          source: typeof source === "string" ? {path:source} : source, 
+          script: script,
           argv: argv || []
         }));
       if (path === "/end")

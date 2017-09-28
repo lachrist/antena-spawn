@@ -1,9 +1,10 @@
 
+var Fs = require("fs");
 var Path = require("path");
 var Spawn = require("../node");
 var Chalk = require("chalk");
 
-var child = Spawn(Path.join(__dirname, "child.js"), ["foo", "bar"], require("./receptor.js"));
+var child = Spawn(Fs.readFileSync(Path.join(__dirname, "child.js"), "utf8"), ["foo", "bar"], require("./receptor.js"));
 
 child.stdin.write("stdin test\n");
 
