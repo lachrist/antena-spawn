@@ -22,35 +22,37 @@ function pair () {
   return {readable:readable, writable:writable};
 }
 
-module.exports = function (script, argv, receptor) {
-  var child = new Events();
-  var mock = new Events();
-  (function (stdin) {
-    child.stdin = stdin.writable;
-    mock.stdin = stdin.readable;
-  } (pair()));
-  (function (stdout) {
-    child.stdout = stdout.readable;
-    mock.stdout = stdout.writable;
-  } (pair()));
-  (function (stderr) {
-    child.stderr = stderr.readable;
-    mock.stderr = stderr.writable;
-  } (pair()));
-  child.send = function (message) { mock.emit("message", JSON.parse(JSON.stringify(message))) };
-  mock.send = function (message) { child.emit("message", JSON.parse(JSON.stringify(message))) };
-  child.kill = function (signal) { Terminate(child, null, signal) };
-  mock.exit = function (code) { Terminate(child, code, null) };
-  child.stdio = [child.stdin, child.stdout, child.stderr];
-  mock.emitter = EmitterMock(receptor);
-  mock.argv = argv || ["mock", "inline"];
-  setTimeout(function () {
-    var main = Function("global", "process", "console", script);
-    try {
-      main(global, mock, Console(mock.stdout, mock.stderr));
-    } catch (error) {
-      mock.stderr.write(error && "stack" in error ? error.stack : ""+error+"\n");
-    }
-  }, 0);
-  return child;
+module.exports = function (receptor) {
+  return function (script, argv) {
+    var child = new Events();
+    var mock = new Events();
+    (function (stdin) {
+      child.stdin = stdin.writable;
+      mock.stdin = stdin.readable;
+    } (pair()));
+    (function (stdout) {
+      child.stdout = stdout.readable;
+      mock.stdout = stdout.writable;
+    } (pair()));
+    (function (stderr) {
+      child.stderr = stderr.readable;
+      mock.stderr = stderr.writable;
+    } (pair()));
+    child.send = function (message) { mock.emit("message", JSON.parse(JSON.stringify(message))) };
+    mock.send = function (message) { child.emit("message", JSON.parse(JSON.stringify(message))) };
+    child.kill = function (signal) { Terminate(child, null, signal) };
+    mock.exit = function (code) { Terminate(child, code, null) };
+    child.stdio = [child.stdin, child.stdout, child.stderr];
+    mock.emitter = EmitterMock(receptor);
+    mock.argv = ["mock", "inline"].concat(argv || []);
+    setTimeout(function () {
+      var main = Function("global", "process", "console", script);
+      try {
+        main(global, mock, Console(mock.stdout, mock.stderr));
+      } catch (error) {
+        mock.stderr.write(error && "stack" in error ? error.stack : ""+error+"\n");
+      }
+    }, 0);
+    return child;
+  };
 };

@@ -1,8 +1,6 @@
-
 process.stdin.on("data", function (data) {
   process.stderr.write(data);
 });
-
 var emitters = process.emitter.split(["ping", "unmatched", "hello"]);
 console.log(process.argv);
 console.log(emitters.ping.request("GET", "/", {}, ""));

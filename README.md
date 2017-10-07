@@ -3,37 +3,38 @@
 
 Spawn scripts with an antena connection.
 
-## `child = require("antena/spawn/[node|browser|mock]")(script, argv, receptor)`
+## `spawn = require("antena/spawn/[node|browser|mock]")(receptor)`
 
-* `script : string`
-* `argv : [string]`
 * `receptor : antena.Receptor`
-* `child : events.EventEmitter`
-  * `stdin : stream.Writable`
-  * `stdout : stream.Readable`
-  * `stderr : stream.Readable`
-  * `send(message)`
-    * `message : json`
-  * Event `message`
-    * `message : json`
-  * `kill(signal)`
-    * `signal : string`
-  * Event `exit`
-    * `code : number`
-    * `signal : string`
-  * Event `close`
-    * `code : number`
-    * `signal : string`
-  * Event `error`
-    * `error : Error`
+* `child = spawn(script, argv)`
+  * `script : string`
+  * `argv : [string]`
+  * `child : events.EventEmitter`
+    * `stdin : stream.Writable`
+    * `stdout : stream.Readable`
+    * `stderr : stream.Readable`
+    * `send(message)`
+      * `message : json`
+    * Event `message`
+      * `message : json`
+    * `kill(signal)`
+      * `signal : string`
+    * Event `exit`
+      * `code : number`
+      * `signal : string`
+    * Event `close`
+      * `code : number`
+      * `signal : string`
+    * Event `error`
+      * `error : Error`
 
 ## Shimed variables accessible in the child's scope
 
 * `global : object`
 * `console : console.Console`
 * `process : events.EventEmitter`
-    * `argv : [string]`
     * `emitter : antena.Emitter`
+    * `argv : [string]`
     * `stdin : stream.Readable`
     * `stdout : stream.Writable`
     * `stderr : stream.Writable`
