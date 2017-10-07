@@ -1,2 +1,5 @@
 .DS_Store
 /demo/
+/worker/index-template.js
+/worker/bundle.js
+/worker/child.js
