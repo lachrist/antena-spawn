@@ -15,8 +15,7 @@ module.exports = function (receptor) {
     child.stdout = StreamWebsocket.Readable(cons.io);
     child.stderr = StreamWebsocket.Readable(cons.err);
     child.stdio = [child.stdin, child.stdout, child.stderr];
-    var worker = new Worker(TEMPLATE_CHILD_URL);
-    var close = Receptor({
+    var worker = Receptor({
       onrequest: function (method, path, headers, body, callback) {
         if (path === "/begin")
           return callback(200, "ok", {}, JSON.stringify({
@@ -32,10 +31,10 @@ module.exports = function (receptor) {
           return cons[path.substring(1)].flush(con);
         con.close(4000, "invalid-path");
       }
-    }).merge({meta:receptor}).attach(worker);
-    worker.onerror = function (error) {
-      child.stderr.push(error.message+"\n");
-    };
+    }).merge({meta:receptor}).spawn(TEMPLATE_CHILD_URL);
+    worker.addEventListener("error", function (error) {
+      child.stderr.push(error.message+" at "+error.filename+", line "+error.lineno+", column "+error.colno+"\n");
+    });
     function terminate (code, signal) {
       close();
       Terminate(child, code, signal);
