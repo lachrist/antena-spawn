@@ -2,7 +2,7 @@
 # antena-spawn
 
 Spawn inline scripts with an antena connection.
-Usage [here](/demo), live demo [here](https://cdn.rawgit.com/lachrist/antena-spawn/eec847bb/demo/index.html).
+Usage [here](/demo), live demo [here](https://cdn.rawgit.com/lachrist/antena-spawn/9fe0f5eb/demo/worker.html).
 
 ## `spawn = require("antena/spawn/[node|browser|mock]")(receptor)`
 

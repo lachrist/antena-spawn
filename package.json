@@ -1,7 +1,7 @@
 {
   "name": "antena-spawn",
   "description": "Uniformely spawn processes with an antena connection",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": {
     "name": "Laurent Christophe",
     "email": "lachrist@vub.ac.be"
@@ -9,7 +9,7 @@
   "repository": "lachrist/antena-spawn",
   "license": "MIT",
   "dependencies": {
-    "antena": "^0.1.5"
+    "antena": "0.1.5"
   },
   "keywords": [
     "Antena",
