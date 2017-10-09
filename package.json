@@ -9,7 +9,7 @@
   "repository": "lachrist/antena-spawn",
   "license": "MIT",
   "dependencies": {
-    "antena": "0.1.4"
+    "antena": "^0.1.5"
   },
   "keywords": [
     "Antena",
