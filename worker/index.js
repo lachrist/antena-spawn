@@ -39,7 +39,7 @@ module.exports = function (receptor) {
       child.stderr.push(error.message+" at "+error.filename+", line "+error.lineno+", column "+error.colno+"\n");
     });
     function terminate (code, signal) {
-      close();
+      worker.terminate();
       Terminate(child, code, signal);
     }
     child.kill = function (signal) { terminate(null, signal) };
